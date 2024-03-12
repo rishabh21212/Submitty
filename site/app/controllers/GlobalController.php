@@ -108,88 +108,11 @@ class GlobalController extends AbstractController {
             "icon" => "fas fa-star"
          ]);
 
-        if ($unread_notifications_count !== null) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['notifications']),
-                "title" => "Notifications",
-                "badge" => $unread_notifications_count,
-                "icon" => "fa-bell"
-            ]);
-        }
-
         if ($this->core->getUser()->accessAdmin()) {
             $sidebar_buttons[] = new NavButton($this->core, [
                 "href" => $this->core->buildCourseUrl(['gradeable']),
                 "title" => "New Gradeable",
                 "icon" => "fa-plus-square"
-            ]);
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['config']),
-                "title" => "Course Settings",
-                "icon" => "fa-cog"
-            ]);
-            $sidebar_buttons[] = new Button($this->core, [
-                "href" => $this->core->buildCourseUrl(['sql_toolbox']),
-                "title" => "SQL Toolbox",
-                "class" => "nav-row",
-                "id" => "nav-sidebar-sql-toolbox",
-                "icon" => "fa-toolbox"
-            ]);
-        }
-
-        if ($this->core->getConfig()->isQueueEnabled()) {
-            if ($this->core->getQueries()->isAnyQueueOpen()) {
-                $sidebar_buttons[] = new NavButton($this->core, [
-                    "href" => $this->core->buildCourseUrl(['office_hours_queue']),
-                    "title" => "Office Hours Queue",
-                    "id" => "nav-sidebar-queue",
-                    "icon" => "fa-door-open"
-                ]);
-            }
-            else {
-                $sidebar_buttons[] = new NavButton($this->core, [
-                   "href" => $this->core->buildCourseUrl(['office_hours_queue']),
-                   "title" => "Office Hours Queue",
-                   "id" => "nav-sidebar-queue",
-                   "icon" => "fa-door-closed"
-                ]);
-            }
-        }
-
-        if ($this->core->getConfig()->isPollsEnabled()) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['polls']),
-                "title" => "Submini Polls",
-                "id" => "nav-sidebar-polls",
-                "icon" => "fa-question-circle"
-            ]);
-        }
-
-        $course_path = $this->core->getConfig()->getCoursePath();
-        $course_materials_path = $course_path . "/uploads/course_materials";
-        $empty = FileUtils::isEmptyDir($course_materials_path);
-        if ($this->core->getUser()->accessAdmin() || !($empty)) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['course_materials']),
-                "title" => "Course Materials",
-                "icon" => "fa-file"
-            ]);
-        }
-
-        if ($this->core->getConfig()->isForumEnabled()) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['forum']),
-                "title" => "Discussion Forum",
-                "id" => "nav-sidebar-forum",
-                "icon" => "fa-comments"
-            ]);
-        }
-
-        if ($this->core->getUser()->accessAdmin()) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['email_status']),
-                "title" => "Email Status",
-                "icon" => "fa-envelope"
             ]);
         }
 
@@ -248,42 +171,6 @@ class GlobalController extends AbstractController {
                 "id" => "nav-sidebar-graders",
                 "icon" => "fa-address-book"
             ]);
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['sections']),
-                "title" => "Manage Sections",
-                "id" => "nav-sidebar-sections",
-                "icon" => "fa-users"
-            ]);
-        }
-
-        if ($this->core->getUser()->accessGrading()) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['student_photos']),
-                "title" => "Student Photos",
-                "id" => "nav-sidebar-photos",
-                "icon" => "fa-id-card"
-            ]);
-        }
-
-        if ($this->core->getUser()->accessAdmin()) {
-            $sidebar_buttons[] = new Button($this->core, [
-                "href" => $this->core->buildCourseUrl(['activity']),
-                "title" => "Student Activity Dashboard",
-                "class" => "nav-row",
-                "id" => "nav-sizebar-activity-dashboard",
-                "icon" => "fa-table"
-            ]);
-        }
-
-        if (
-            $this->core->getUser()->accessAdmin()
-            && $this->core->getConfig()->displayRainbowGradesSummary()
-        ) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(["gradebook"]),
-                "title" => "Gradebook",
-                "icon" => "fa-book-reader"
-            ]);
         }
 
         // --------------------------------------------------------------------------
@@ -296,65 +183,16 @@ class GlobalController extends AbstractController {
 
         if ($this->core->getUser()->accessAdmin()) {
             $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['late_days']),
-                "title" => "Late Days Allowed",
-                "icon" => "fa-calendar-check"
-            ]);
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['extensions']),
-                "title" => "Excused Absence Extensions",
-                "id" => "nav-sidebar-extensions",
-                "icon" => "fa-calendar-plus"
-            ]);
-            if ($this->core->getConfig()->checkFeatureFlagEnabled('late_day_cache_display')) {
-                $sidebar_buttons[] = new NavButton($this->core, [
-                    "href" => $this->core->buildCourseUrl(['bulk_late_days']),
-                    "title" => "Bulk Late Days",
-                    "icon" => "fa-calendar-alt"
-                ]);
-            }
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['grade_override']),
-                "title" => "Grade Override",
-                "icon" => "fa-eraser"
-            ]);
-
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['plagiarism']),
-                "title" => "Plagiarism Detection",
-                "id" => "nav-sidebar-plagiarism",
-                "icon" => "fa-exclamation-triangle"
-            ]);
-
-            $sidebar_buttons[] = new NavButton($this->core, [
                 "href" => $this->core->buildCourseUrl(['reports']),
                 "title" => "Grade Reports",
                 "id" => "nav-sidebar-reports",
                 "icon" => "fa-chart-bar"
-            ]);
-            $sidebar_buttons[] = new Button($this->core, [
-                "class" => "nav-row short-line",
             ]);
         }
 
         // --------------------------------------------------------------------------
 
         $display_rainbow_grades_summary = $this->core->getConfig()->displayRainbowGradesSummary();
-        if ($display_rainbow_grades_summary) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['grades']),
-                "title" => "Rainbow Grades",
-                "id" => "nav-sidebar-grades",
-                "icon" => "fa-chart-line"
-            ]);
-        }
-
-        $sidebar_buttons[] = new NavButton($this->core, [
-            "href" => $this->core->buildCourseUrl(['late_table']),
-            "title" => "My Late Days/Extensions",
-            "id" => "nav-sidebar-late-days",
-            "icon" => "fa-calendar"
-        ]);
 
         // --------------------------------------------------------------------------
         $sidebar_buttons[] = new Button($this->core, [
@@ -375,16 +213,8 @@ class GlobalController extends AbstractController {
 
         $sidebar_buttons[] = new NavButton($this->core, [
             "href" => $this->core->buildUrl(['user_profile']),
-            "title" => "My Profile",
+            "title" => "Profile",
             "icon" => "fa-user"
-        ]);
-
-        $sidebar_buttons[] = new Button($this->core, [
-            "href" => $this->core->buildUrl(['calendar']),
-            "title" => "Calendar",
-            "class" => "nav-row",
-            "id" => "nav-sidebar-calendar",
-            "icon" => "fa-calendar"
         ]);
 
         $is_instructor = !empty($this->core->getQueries()->getInstructorLevelAccessCourse($this->core->getUser()->getId()));
@@ -400,14 +230,6 @@ class GlobalController extends AbstractController {
         // --------------------------------------------------------------------------
         // FACULTY & SUPERUSERS ONLY
         if ($this->core->getUser()->accessFaculty()) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildUrl(['admin', 'docker']),
-                "title" => "Docker UI",
-                "id" => "nav-sidebar-docker-link",
-                "icon" => "fa-docker",
-                "prefix" => "fab",
-            ]);
-
             $sidebar_buttons[] = new NavButton($this->core, [
                 "href" => $this->core->buildUrl(['home', 'courses', 'new']),
                 "title" => "New Course",

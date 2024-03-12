@@ -1,0 +1,13 @@
+{
+    "name": "risha/submitty",
+    "description": "UX of proj",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Rishabh Sahai",
+            "email": "f20191124@hyderabad.bits-pilani.ac.in"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

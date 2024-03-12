@@ -45,3 +45,4 @@ Pipfile.lock
 .phpunit.result.cache
 
 .env
+/vendor/
