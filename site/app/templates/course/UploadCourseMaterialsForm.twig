@@ -1,88 +1,32 @@
 {% extends 'generic/Popup.twig' %}
 {% block popup_id %}upload-course-materials-form{% endblock %}
-{% block title %}Upload Course Materials{% endblock %}
+{% block title %}Upload Base paper{% endblock %}
 {% block body %}
     <div id="material-upload-form" class="flex-col flex-col-space">
-        <p>
-            <strong>Path to directory containing course materials file(s):</strong><br />
-            {{ base_course_material_path~"/" }}
-        </p>
-        <label id="cm_path">
-            <span id="path-information">
-                <strong>Optional: amend the above path to use a sub directory</strong><br />
-                e.g. "optional/subdirectory" makes the full path:<br />
-                {{ base_course_material_path }}/optional/subdirectory
-            </span>
-            <span id="upload-location-drop-down">
-                <select name="eg_config_path" id="provide-full-path">
-                    <option value=""> (Top Directory) </option>
-                    {% for folder_path in folder_paths %}
-                        <option value="{{ folder_path }}">{{ folder_path }}</option>
-                    {% endfor %}
-                </select>
-            </span>
-        </label>
-        <fieldset>
-            <legend class="black-message">
-                Do you want to restrict this course material to some sections?
-            </legend>
-            <label class = "radio" for="all_Sections_Showing">
-                <input id = "all_Sections_Showing" name="show_Some_Section_Selection" type = "radio" onchange="toggleRegistrationSections()" checked>
-                No
-            </label>
-            <label class = "radio" for="all_Sections_Showing_yes">
-                <input id="all_Sections_Showing_yes" name="show_Some_Section_Selection" type = "radio" onchange="toggleRegistrationSections()">
-                Yes
-            </label>
-            <script>
-                function toggleRegistrationSections(){
-                    $("#show_Some_Section_Selection").toggle();
-                }
-            </script>
-            <br>
-            <div id = "show_Some_Section_Selection" class= "show-some-section-selection" style="display: none">
-            {% for section in reg_sections %}
-                <div class = "reg-section-item">
-                    <input id="section-upload-{{section['sections_registration_id']}}" type="checkbox" value="off"/>
-                    <label for="section-upload-{{section['sections_registration_id']}}">Section{{ section['sections_registration_id'] }}</label>
-                </div>
-            {% endfor %}
-            </div>
-        </fieldset>
-        <label id="upload_dt" style="pointer-events:none;">
-            <span>
-                <strong>Choose a time to release the files being uploaded:</strong>
-            </span>
-            <input id="upload_picker" class="date_picker" type="text" size="26" value='9998-01-01 00:00:00' style="pointer-events:auto;"><br>
-            <span><em><strong>Note:</strong> Everyone with grading access will be able to view all the materials irrespective of the release date/time.</em></span>
-        </label>
-        <label>
-            <span>
-                <strong>Sorting rank (lower value = higher position):</strong>
-            </span>
-            <input id="upload_sort" value="0.0" type="text" size="26"/>
-        </label>
-        <label class="my-0">
-            <input id="hide-materials-checkbox" type="checkbox" value="off">
-            Hide from Students
-        </label>
-         <p class="my-0">
-            <em><strong>Note:</strong> Hidden course materials are omitted from the course materials directory listing; however, these materials can still be accessed via the URL. </em> <br>
-            <em>These materials will always be available to course staff (full and limited access graders), regardless of release date. </em>
-        </p>
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
         <fieldset>
             <legend class="black-message">
-                Type of course material?
+                Type of exam?
             </legend>
             <label class = "radio" for="file_selection_radio">
                 <input id="file_selection_radio" name="course_material_type" type="radio" onchange="$('#file_selection').show();$('#url_selection').hide();" checked>
-                File
+                Quiz
             </label>
-            <label class = "radio" for="url_selection_radio">
-                <input id="url_selection_radio" name="course_material_type" type="radio" onchange="$('#file_selection').hide();$('#url_selection').show();">
-                External URL
+            <label class = "radio" for="file_selection_radio">
+                <input id="file_selection_radio" name="course_material_type" type="radio" onchange="$('#file_selection').show();$('#url_selection').hide();" checked>
+                Mid-semester exam
             </label>
+            <label class = "radio" for="file_selection_radio">
+                <input id="file_selection_radio" name="course_material_type" type="radio" onchange="$('#file_selection').show();$('#url_selection').hide();" checked>
+                Comprehensive exam
+            </label>
+        </fieldset>
+        <fieldset>
+                <label>
+                    Number of Variants?
+                    <input id="title" type="text" class="full-width"/>
+                </label>
+            </span>
         </fieldset>
         <div id="file_selection">
           <label>
@@ -92,7 +36,7 @@
           <div id="upload-boxes">
               {# upload1 and input-file1 required for drag-and-drop.js #}
               <div id="upload1" class="file-input">
-                <label class="label key_to_click" for="input-file1" tabindex="0">Drag your file(s) here or click to open file browser</label>
+                <label class="label key_to_click" for="input-file1" tabindex="0">Drag your Base Question Set here or click to open file browser</label>
                 <input type="file" name="files" id="input-file1" onchange="addFilesFromInput(1,false)" multiple />
                 <table class="file-upload-table" id="file-upload-table-1">
                   <tr style="background:transparent; display:none;">

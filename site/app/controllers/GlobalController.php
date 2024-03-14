@@ -76,11 +76,11 @@ class GlobalController extends AbstractController {
         }
         $this->prep_user_sidebar($sidebar_buttons);
 
-        $sidebar_buttons[] = new NavButton($this->core, [
-            "href" => "javascript: toggleSidebar();",
-            "title" => "Collapse Sidebar",
-            "icon" => "fa-bars"
-        ]);
+        // $sidebar_buttons[] = new NavButton($this->core, [
+        //     "href" => "javascript: toggleSidebar();",
+        //     "title" => "Collapse Sidebar",
+        //     "icon" => "fa-bars"
+        // ]);
 
         $sidebar_buttons[] = new NavButton($this->core, [
             "href" => $this->core->buildUrl(['authentication', 'logout']),
@@ -115,7 +115,11 @@ class GlobalController extends AbstractController {
                 "icon" => "fa-plus-square"
             ]);
         }
-
+        $course_path = $this->core->getConfig()->getCoursePath();
+        $course_materials_path = $course_path . "/uploads/course_materials";
+        $empty = FileUtils::isEmptyDir($course_materials_path);
+        if ($this->core->getUser()->accessAdmin() || !($empty)) {
+        }
         // --------------------------------------------------------------------------
 
         $sidebar_buttons[] = new Button($this->core, [
@@ -159,17 +163,22 @@ class GlobalController extends AbstractController {
         // --------------------------------------------------------------------------
 
         if ($this->core->getUser()->accessAdmin()) {
+            // $sidebar_buttons[] = new NavButton($this->core, [
+            //    "href" => $this->core->buildCourseUrl(['users']),
+            //    "title" => "Manage Students",
+            //    "id" => "nav-sidebar-students",
+            //    "icon" => "fa-user-graduate"
+            // ]);
+            // $sidebar_buttons[] = new NavButton($this->core, [
+            //     "href" => $this->core->buildCourseUrl(['graders']),
+            //     "title" => "Manage Graders",
+            //     "id" => "nav-sidebar-graders",
+            //     "icon" => "fa-address-book"
+            // ]);
             $sidebar_buttons[] = new NavButton($this->core, [
-               "href" => $this->core->buildCourseUrl(['users']),
-               "title" => "Manage Students",
-               "id" => "nav-sidebar-students",
-               "icon" => "fa-user-graduate"
-            ]);
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['graders']),
-                "title" => "Manage Graders",
-                "id" => "nav-sidebar-graders",
-                "icon" => "fa-address-book"
+                "href" => $this->core->buildCourseUrl(['course_materials']),
+                "title" => "Generate Question sets",
+                "icon" => "fa-file"
             ]);
         }
 
@@ -182,6 +191,11 @@ class GlobalController extends AbstractController {
         }
 
         if ($this->core->getUser()->accessAdmin()) {
+            $sidebar_buttons[] = new NavButton($this->core, [
+                "href" => $this->core->buildCourseUrl(['grade_override']),
+                "title" => "Grade Override",
+                "icon" => "fa-eraser"
+            ]);
             $sidebar_buttons[] = new NavButton($this->core, [
                 "href" => $this->core->buildCourseUrl(['reports']),
                 "title" => "Grade Reports",
@@ -211,11 +225,11 @@ class GlobalController extends AbstractController {
             "icon" => "fa-book-reader"
         ]);
 
-        $sidebar_buttons[] = new NavButton($this->core, [
-            "href" => $this->core->buildUrl(['user_profile']),
-            "title" => "Profile",
-            "icon" => "fa-user"
-        ]);
+        // $sidebar_buttons[] = new NavButton($this->core, [
+        //     "href" => $this->core->buildUrl(['user_profile']),
+        //     "title" => "Profile",
+        //     "icon" => "fa-user"
+        // ]);
 
         $is_instructor = !empty($this->core->getQueries()->getInstructorLevelAccessCourse($this->core->getUser()->getId()));
         // Create the line for all faculties, superusers, and instructors
@@ -276,11 +290,6 @@ class GlobalController extends AbstractController {
         // --------------------------------------------------------------------------
         // INSTRUCTOR IN ANY COURSE
         if ($is_instructor) {
-            $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildUrl(['autograding_status']),
-                "title" => "Autograding Status",
-                "icon" => "fa-server"
-            ]);
         }
 
         $sidebar_buttons[] = new Button($this->core, [
