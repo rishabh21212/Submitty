@@ -302,6 +302,56 @@ function newUploadCourseMaterialsForm() {
     $('[name="upload"]', form).val(null);
     $('#overwrite-materials-flag').remove();
 }
+function newUploadCourseMaterialsForm1() {
+
+    createArray(1);
+
+    const fileList = document.getElementsByClassName('file-viewer-data');
+
+    const files = [];
+    for (let i=0;i<fileList.length;i++) {
+        const file = fileList[i];
+        files.push(file.getAttribute('data-file_url'));
+        readPrevious(file.getAttribute('data-file_url'), 1);
+    }
+
+    $('.popup-form').css('display', 'none');
+    const form = $('#upload-course-materials-form');
+
+    $('[name="existing-file-list"]', form).html('');
+    $('[name="existing-file-list"]', form).append(`<b>${JSON.stringify(files)}</b>`);
+
+    form.css('display', 'block');
+    captureTabInModal('upload-course-materials-form');
+    form.find('.form-body').scrollTop(0);
+    $('[name="upload"]', form).val(null);
+    $('#overwrite-materials-flag').remove();
+}
+function newUploadCourseMaterialsForm2() {
+
+    createArray(1);
+
+    const fileList = document.getElementsByClassName('file-viewer-data');
+
+    const files = [];
+    for (let i=0;i<fileList.length;i++) {
+        const file = fileList[i];
+        files.push(file.getAttribute('data-file_url'));
+        readPrevious(file.getAttribute('data-file_url'), 1);
+    }
+
+    $('.popup-form').css('display', 'none');
+    const form = $('#upload-course-materials-form');
+
+    $('[name="existing-file-list"]', form).html('');
+    $('[name="existing-file-list"]', form).append(`<b>${JSON.stringify(files)}</b>`);
+
+    form.css('display', 'block');
+    captureTabInModal('upload-course-materials-form');
+    form.find('.form-body').scrollTop(0);
+    $('[name="upload"]', form).val(null);
+    $('#overwrite-materials-flag').remove();
+}
 
 function newEditCourseMaterialsFolderForm(tag) {
     const id = $(tag).data('id');

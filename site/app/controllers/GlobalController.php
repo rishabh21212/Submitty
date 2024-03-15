@@ -177,8 +177,8 @@ class GlobalController extends AbstractController {
             //     "icon" => "fa-address-book"
             // ]);
             $sidebar_buttons[] = new NavButton($this->core, [
+                "title" => "(AQG)Generate Question sets",
                 "href" => $this->core->buildCourseUrl(["generateSet"]),
-                "title" => "Generate Question sets",
                 "icon" => "fa-file"
             ]);
         }
