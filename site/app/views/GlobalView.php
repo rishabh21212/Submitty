@@ -17,7 +17,7 @@ class GlobalView extends AbstractView {
             }
         }
 
-        $page_title = "Submitty";
+        $page_title = "Spanda";
         if ($this->core->getUser() === null) {
             $page_title = "Login";
         }

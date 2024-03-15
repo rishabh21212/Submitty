@@ -158,13 +158,15 @@ function get_part_number(e) {
 function addFilesFromInput(part, check_duplicate_zip=true) {
     const filestream = document.getElementById(`input-file${part}`).files;
     if (addIsValid(filestream.length, total_files_added)) {
-        for (let i=0; i<filestream.length; i++) {
+        for (let i = 0; i < filestream.length; i++) {
             addFile(filestream[i], part, check_duplicate_zip); // folders will not be selected in file browser, no need for check
             total_files_added++;
         }
     }
+    // Reset the value of the input element to clear the selection
     $(`#input-file${part}`).val('');
 }
+
 
 // Check for duplicate file names. This function returns an array.
 // First element:

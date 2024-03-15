@@ -159,26 +159,33 @@
                             />
                     </a>
                     <div id="breadcrumbs">
-                        {% for b in breadcrumbs %}
-                            {% if loop.index0 > 0 %}
-                                <span class="centered-icon">
-                                    <i class="fas fa-angle-right"></i>
-                                </span>
-                            {% endif %}
-                            <div class="breadcrumb">
-                                {% if b.getUrl() is not empty and not loop.last %}
-                                    <a {% if loop.first %}id="desktop_home_link"{% endif %} href='{{ b.getUrl() }}'>{{ b.getTitle() }}</a>
-                                {% elseif b.useAsHeading() %}
-                                    <h1 class="breadcrumb-heading">{{ b.getTitle() }}</h1>
-                                {% else %}
-                                    <span>{{ b.getTitle() }}</span>
-                                {% endif %}
-                                {% if b.getExternalUrl() is not empty %}
-                                    <a class="external-breadcrumb" href="{{ b.getExternalUrl() }}" target="_blank" aria-label="Go to {{ b.getTitle() }}"><i class="fas fa-external-link-alt"></i></a>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                    {% for b in breadcrumbs %}
+                        {% if loop.index0 > 0 %}
+                        <span class="centered-icon">
+                            <i class="fas fa-angle-right"></i>
+                        </span>
+                        {% endif %}
+                        <div class="breadcrumb">
+                        {% if b.getUrl() is not empty and not loop.last %}
+                            <a {% if loop.first %}id="desktop_home_link"{% endif %} href='{{ b.getUrl() }}'>
+                            {{ b.getTitle() == 'Submitty' ? 'Spanda' : b.getTitle() }}
+                            </a>
+                        {% elseif b.useAsHeading() %}
+                            <h1 class="breadcrumb-heading">
+                            {{ b.getTitle() == 'Submitty' ? 'Spanda' : b.getTitle() }}
+                            </h1>
+                        {% else %}
+                            <span>
+                            {{ b.getTitle() == 'Submitty' ? 'Spanda' : b.getTitle() }}
+                            </span>
+                        {% endif %}
+                        {% if b.getExternalUrl() is not empty %}
+                            <a class="external-breadcrumb" href="{{ b.getExternalUrl() }}" target="_blank" aria-label="Go to {{ b.getTitle() }}"><i class="fas fa-external-link-alt"></i></a>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
                     </div>
+
                 </div>
                 <div style="display: flex">
 
