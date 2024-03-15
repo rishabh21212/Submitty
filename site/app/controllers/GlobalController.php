@@ -6,6 +6,7 @@ use app\libraries\FileUtils;
 use app\models\Button;
 use app\models\NavButton;
 use app\models\User;
+use Symfony\Component\Routing\Annotation\Route;
 
 class GlobalController extends AbstractController {
     public function header() {
@@ -176,7 +177,7 @@ class GlobalController extends AbstractController {
             //     "icon" => "fa-address-book"
             // ]);
             $sidebar_buttons[] = new NavButton($this->core, [
-                "href" => $this->core->buildCourseUrl(['course_materials']),
+                "href" => $this->core->buildCourseUrl(["generateSet"]),
                 "title" => "Generate Question sets",
                 "icon" => "fa-file"
             ]);
@@ -296,7 +297,13 @@ class GlobalController extends AbstractController {
             "class" => "nav-row short-line",
         ]);
     }
-
+    /**
+     *  @Route("/courses/{_semester}/{_course}/generateSet")
+     */
+    public function generateSet()
+    {
+        return $this->core->getOutput()->renderTwigTemplate("course\UploadCourseMaterialsForm.twig");
+    }
 
     public function calculateHanukkahDate(int $year): \DateTime {
         // This is the Hanukkah in civil year
