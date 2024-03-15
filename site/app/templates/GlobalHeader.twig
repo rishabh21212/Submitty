@@ -224,6 +224,19 @@
                             <img id="logo-submitty-light" src="{{ base_url }}/img/Spanda_logo.png" alt="Spanda Logo">
                         </a>
                     </span>
+                    <style>
+                        /* CSS to reduce the size of the Spanda logo */
+                        #logo-box {
+                            width: 200px; /* Set the desired width */
+                            height: 36px; /* Set the desired height */
+                        }
+
+                        #logo-box img {
+                            max-width: 100%; /* Ensure the image doesn't exceed the width of its container */
+                            height: auto; /* Maintain aspect ratio */
+                        }
+                    </style>
+
                 </div>
                 {# assuming that if sidebar_buttons only has len 2 it contains logout and collapse (on index page only) #}
                 {% if sidebar_buttons|length > 2 %}
