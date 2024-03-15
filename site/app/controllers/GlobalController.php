@@ -6,6 +6,7 @@ use app\libraries\FileUtils;
 use app\models\Button;
 use app\models\NavButton;
 use app\models\User;
+use app\libraries\DateUtils;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GlobalController extends AbstractController {
@@ -302,7 +303,27 @@ class GlobalController extends AbstractController {
      */
     public function generateSet()
     {
-        return $this->core->getOutput()->renderTwigTemplate("course\UploadCourseMaterialsForm.twig");
+        $begining_of_time_date = DateUtils::BEGINING_OF_TIME;
+        $this->core->getOutput()->renderTwigOutput("course\CourseMaterials.twig",
+    [
+        "user_group" => $this->core->getUser()->getGroup(),
+        "user_section" => $this->core->getUser()->getRegistrationSection(),
+        "reg_sections" => $this->core->getQueries()->getRegistrationSections(),
+        "csrf_token" => $this->core->getCsrfToken(),
+        "display_file_url" => $this->core->buildCourseUrl(['display_file']),
+        // "seen" => $seen,
+        // "folder_visibilities" => $folder_visibilities,
+        // "base_course_material_path" => $base_course_material_path,
+        // "directory_priorities" => $directory_priorities,
+        // "material_list" => $course_materials_db,
+        // "materials_exist" => count($course_materials_db) != 0,
+        "date_format" => $this->core->getConfig()->getDateTimeFormat()->getFormat('date_time_picker'),
+        "course_materials" => $final_structure,
+        "folder_ids" => $folder_ids,
+        "links" => $links,
+        "folder_paths" => $folder_paths,
+        "begining_of_time_date" => $begining_of_time_date
+    ]);
     }
 
     public function calculateHanukkahDate(int $year): \DateTime {
