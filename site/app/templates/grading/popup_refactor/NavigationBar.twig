@@ -96,7 +96,7 @@
 <script>
     window.addEventListener('resize', function(event) {
         const name_div = $('#grading-panel-student-name');
-        //have to calculate the height since the item is positioned absolutely
+        // Have to calculate the height since the item is positioned absolutely
         const height = $('.panels-container')[0].getClientRects()[0].top - name_div.closest('.content-item')[0].getClientRects()[0].top;
         const padding_bottom = 12;
         name_div.css('height', height - padding_bottom);
@@ -107,7 +107,12 @@
         const overlap_margin = 15;
         const overlapping = (panel_buttons_bbox.left - name_div_bbox.right) < overlap_margin;
         if (overlapping || taLayoutDet.isFullLeftColumnMode) {
-            $('#grading-panel-student-name').hide()
+            $('#grading-panel-student-name').hide();
+            // Hide specific navigation buttons here
+            $('#prev-student-navlink, #next-student-navlink').hide();
+        } else {
+            // Show the navigation buttons if not overlapping
+            $('#prev-student-navlink, #next-student-navlink').show();
         }
     });
 </script>

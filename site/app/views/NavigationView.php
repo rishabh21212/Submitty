@@ -18,7 +18,7 @@ class NavigationView extends AbstractView {
     const gradeableSections = [
         GradeableList::FUTURE => [
             //What title is displayed to the user for each category
-            "title" => "FUTURE",
+            "title" => "FUTURE(Not yet live to TAs or Students)",
             //Shown italicized after the title
             "subtitle" => "visible only to Instructors",
             //Element id of the header row (used primarily by e2e tests)
@@ -33,7 +33,7 @@ class NavigationView extends AbstractView {
             "prefix" => "ALPHA SUBMIT"
         ],
         GradeableList::BETA => [
-            "title" => "BETA",
+            "title" => "BETA(TAs can access this, but students can not submit yet)",
             "subtitle" => "open for testing by TAs",
             "section_id" => "beta",
             "button_type_submission" => "btn-default",
@@ -41,7 +41,7 @@ class NavigationView extends AbstractView {
             "prefix" => "BETA SUBMIT"
         ],
         GradeableList::OPEN => [
-            "title" => "OPEN",
+            "title" => "OPEN(Students can submit, TAs and Instructors can autograde)",
             "is_panel_expanded" => true,
             "subtitle" => "",
             "section_id" => "open",
@@ -50,7 +50,7 @@ class NavigationView extends AbstractView {
             "prefix" => "SUBMIT"
         ],
         GradeableList::CLOSED => [
-            "title" => "PAST DUE",
+            "title" => "PAST DUE(Students can not submit anymore, grading process has not started yet)",
             "subtitle" => "",
             "section_id" => "closed",
             "button_type_submission" => "btn-danger",
@@ -58,7 +58,7 @@ class NavigationView extends AbstractView {
             "prefix" => "LATE SUBMIT"
         ],
         GradeableList::GRADING => [
-            "title" => "GRADING IN PROGRESS",
+            "title" => "GRADING IN PROGRESS(Students can not submit, grading process has started)",
             "subtitle" => "",
             "section_id" => "items_being_graded",
             "button_type_submission" => "btn-default",
@@ -66,7 +66,7 @@ class NavigationView extends AbstractView {
             "prefix" => "VIEW SUBMISSION"
         ],
         GradeableList::GRADED => [
-            "title" => "GRADES AVAILABLE",
+            "title" => "GRADES AVAILABLE(Grading process done, grades already released)",
             "subtitle" => "",
             "is_panel_expanded" => true,
             "section_id" => "graded",

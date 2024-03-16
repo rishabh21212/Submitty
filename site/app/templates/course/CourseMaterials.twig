@@ -1,36 +1,250 @@
-<div class="content">
-    <h1>Generate Question Sets</h1>
-    <script>
-        green = getComputedStyle(document.documentElement).getPropertyValue('--date-picker-green');
-        yellow = getComputedStyle(document.documentElement).getPropertyValue('--date-picker-yellow');
-        red = getComputedStyle(document.documentElement).getPropertyValue('--date-picker-red');
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper Generation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+        }
+        .content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        h1, h2 {
+            color: #00aaff;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .button-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+        .upload-btn {
+            background-color: #00aaff;
+        }
+        .preview-btn {
+            background-color: #ff9933;
+        }
+        .download-btn {
+            background-color: #00cc00;
+            color: #fff;
+        }
+        .edit-btn {
+            background-color: #9966ff;
+        }
+        .btn:hover {
+            filter: brightness(85%);
+        }
+        .input-label {
+            color: #00aaff;
+            font-weight: bold;
+            margin-right: 10px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-field {
+            width: 150px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #00aaff;
+            background-color: #444;
+            color: #fff;
+            outline: none;
+        }
+        #review-edit-textarea {
+            width: 100%;
+            height: 300px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #00aaff;
+            background-color: #444;
+            color: #fff;
+            resize: none;
+            margin-bottom: 10px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
 
-    <div class="action-buttons" style="float: left; margin-bottom: 20px;">
-        {% if user_group == 1 %}
-            <div style="margin-bottom: 10px;">
-                <a onclick="newUploadCourseMaterialsForm()" class="btn btn-primary key_to_click" tabindex="0">Upload Base Question Paper</a>
-            </div>
-            <!--
-            <div style="margin-bottom: 10px;">
-                <a onclick="newUploadCourseMaterialsForm()" class="btn btn-primary key_to_click" tabindex="0">Upload Rubric</a>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <a onclick="newUploadCourseMaterialsForm()" class="btn btn-primary key_to_click" tabindex="0">Upload Course Content</a>
-            </div>
-            -->
-            {% include '/course/UploadCourseMaterialsForm.twig' %}
-            <!-- Add "Preview/Edit Generated Variants" button -->
-            <div style="margin-bottom: 10px;">
-                <a onclick="newEditCourseMaterialsForm(tag)" class="btn btn-primary key_to_click" tabindex="0">Preview Generated Variants</a>
-            </div>
-            <!-- Add "Download Generated Variants" button -->
-            <div>
-                <a onclick="downloadCourseMaterial(id)" class="btn btn-primary key_to_click" tabindex="0">Download Generated Variants</a>
-            </div>
-        {% endif %}
+<div class="content">
+    <h1>Question Paper Generation System</h1>
+
+    <div class="section">
+        <h2>Exam Type and Upload:</h2>
+        <p>Select the type of exam, book type, and enter the number of variants before uploading.</p>
+        <div class="button-container">
+            <!-- Exam Type -->
+            <label for="exam-type-select" class="input-label">Type of Exam:</label>
+            <select id="exam-type-select" class="input-field">
+                <option value="Quiz">Quiz</option>
+                <option value="Mid-semester exam">Mid-semester exam</option>
+                <option value="Comprehensive exam">Comprehensive exam</option>
+            </select>
+            <!-- Book Type -->
+            <label for="book-type-select" class="input-label">Book Type:</label>
+            <select id="book-type-select" class="input-field">
+                <option value="Open">Open Book</option>
+                <option value="Closed">Closed Book</option>
+            </select>
+            <br>
+            <!-- Number of Variants -->
+            <label for="number-of-variants" class="input-label">Number of Variants:</label>
+            <input type="number" id="number-of-variants" class="input-field" min="1" max="10" value="1">
+            <br><br>
+            <!-- Upload Buttons -->
+            <label for="sample-paper-upload" class="btn upload-btn">Upload Sample Paper</label>
+            <input type="file" id="sample-paper-upload" style="display: none;">
+            <label for="solution-upload" class="btn upload-btn">Upload Solution</label>
+            <input type="file" id="solution-upload" style="display: none;">
+            <label for="course-materials-upload" class="btn upload-btn">Upload Course Materials</label>
+            <input type="file" id="course-materials-upload" style="display: none;">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Preview:</h2>
+        <p>Preview the uploaded sample paper.</p>
+        <div class="button-container">
+            <a id="preview-sample-btn" class="btn preview-btn" style="display: none;">Preview Sample</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Review and Edit:</h2>
+        <p>Review and edit the content of the sample paper.</p>
+        <div class="button-container">
+            <textarea id="review-edit-textarea" rows="10" cols="50" style="resize: none;"></textarea>
+            <br>
+            <button id="save-changes-btn" class="btn edit-btn">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Download:</h2>
+        <p>Download the uploaded sample paper, its solution, and course materials.</p>
+        <div class="button-container">
+            <a id="download-sample-link" class="btn download-btn" style="display: none;" tabindex="0" download>Download Sample Paper</a>
+            <a id="download-solution-link" class="btn download-btn" style="display: none;" tabindex="0" download>Download Solution</a>
+            <a id="download-course-materials-link" class="btn download-btn" style="display: none;" tabindex="0" download>Download Course Materials</a>
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get references to the file inputs and download links
+        var samplePaperInput = document.getElementById('sample-paper-upload');
+        var solutionInput = document.getElementById('solution-upload');
+        var courseMaterialsInput = document.getElementById('course-materials-upload');
+        var downloadSampleLink = document.getElementById('download-sample-link');
+        var downloadSolutionLink = document.getElementById('download-solution-link');
+        var downloadCourseMaterialsLink = document.getElementById('download-course-materials-link');
+        var previewSampleBtn = document.getElementById('preview-sample-btn');
+        var reviewEditTextarea = document.getElementById('review-edit-textarea');
+        var saveChangesBtn = document.getElementById('save-changes-btn');
+        var editedContent = ''; // Variable to store edited content
+
+        // Add event listener to the sample paper file input for change event
+        samplePaperInput.addEventListener('change', function () {
+            // Display the download link for sample paper
+            downloadSampleLink.style.display = 'inline-block';
+            // Get the selected sample paper file
+            var file = samplePaperInput.files[0];
+            // Set the href attribute of the download link to the URL of the selected sample paper file
+            downloadSampleLink.setAttribute('href', URL.createObjectURL(file));
+            // Display the preview button
+            previewSampleBtn.style.display = 'inline-block';
+
+            // Read the content of the sample paper file and display it in the textarea for review and edit
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                reviewEditTextarea.value = e.target.result;
+            };
+            reader.readAsText(file);
+        });
+
+        // Add event listener to the preview button
+        previewSampleBtn.addEventListener('click', function () {
+            // Get the selected sample paper file
+            var file = samplePaperInput.files[0];
+            // Open the file for preview
+            window.open(URL.createObjectURL(file));
+        });
+
+        // Add event listener to the save changes button
+        saveChangesBtn.addEventListener('click', function () {
+            // Get the edited content from the textarea
+            editedContent = reviewEditTextarea.value;
+            // Here you can perform further actions with the edited content
+            console.log('Edited Content:', editedContent);
+            // For now, let's just clear the textarea
+            reviewEditTextarea.value = '';
+        });
+
+        // Add event listener to the solution file input for change event
+        solutionInput.addEventListener('change', function () {
+            // Display the download link for solution
+            downloadSolutionLink.style.display = 'inline-block';
+            // Get the selected solution file
+            var file = solutionInput.files[0];
+            // Set the href attribute of the download link to the URL of the selected solution file
+            downloadSolutionLink.setAttribute('href', URL.createObjectURL(file));
+        });
+
+        // Add event listener to the course materials file input for change event
+        courseMaterialsInput.addEventListener('change', function () {
+            // Display the download link for course materials
+            downloadCourseMaterialsLink.style.display = 'inline-block';
+            // Get the selected course materials file
+            var file = courseMaterialsInput.files[0];
+            // Set the href attribute of the download link to the URL of the selected course materials file
+            downloadCourseMaterialsLink.setAttribute('href', URL.createObjectURL(file));
+        });
+
+        // Update download button to download edited content
+        downloadSampleLink.addEventListener('click', function () {
+            if (editedContent !== '') {
+                var blob = new Blob([editedContent], { type: 'text/plain' });
+                downloadSampleLink.href = URL.createObjectURL(blob);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
 
 
 {% macro display_files(course_materials, links, user_group, user_section, id, indent, display_file_url, path, folder_path, directory_priorities, material_list, date_format, folder_ids, seen,  folder_visibilities, current_path) %}
