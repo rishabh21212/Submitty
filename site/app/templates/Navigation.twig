@@ -27,70 +27,86 @@
     </div>
 {% endif %}
 
+
+
+
+
+
 <div id="gradeables-content" class="content">
-    <h1>All Gradeables</h1>
+    <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ddd;">Automated Grading System</h1>
+    <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #bbb;">Welcome to our Automated Evaluation System! Here's how it works: Simply navigate to the "Grade" section, then select "View All." From there, you can choose "Autograde" to evaluate a specific student's submission. Alternatively, you can opt for "Autograde All" to evaluate every submission present. With just a few clicks, you'll streamline the evaluation process and ensure timely feedback for all submissions.</p>
+    <br><br><br>
+    <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ddd;">All Gradeables</h1>
+    <br>
     {% if sections|length > 0 %}
         <div id="gradeables">
-            {% for list_section, info in sections|reverse %}
-                <div id="{{ info.section_id }}"
-                     class="course-section-heading
-                     {% if info.is_panel_expanded is defined and info.is_panel_expanded %} panel-head-active {% endif %}"
-                >
-                    <div class="course-section-title">
-                        <i class="collapse-icon fas fa-caret-right"></i>
-                        <i class="expand-icon fas fa-caret-down"></i>
-                        {{ info.title }}
-                        {% if info.subtitle != "" %}
-                            &nbsp;&nbsp;<em>{{ info.subtitle }}</em>
-                        {% endif %}
-                    </div>
-                    {% for button in 1 .. max_buttons %}
-                        <div class="button-placeholder"></div>
-                    {% endfor %}
+        {% for list_section, info in sections|reverse %}
+            <div id="{{ info.section_id }}"
+                 class="course-section-heading
+                 {% if info.is_panel_expanded is defined and info.is_panel_expanded %} panel-head-active {% endif %}"
+            >
+                <div class="course-section-title">
+                    <i class="collapse-icon fas fa-caret-right" style="color: #aaa;"></i>
+                    <i class="expand-icon fas fa-caret-down" style="color: #aaa;"></i>
+                    <span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ccc;">{{ info.title }}</span>
+                    {% if info.subtitle != "" %}
+                        &nbsp;&nbsp;<em style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #999;">{{ info.subtitle }}</em>
+                    {% endif %}
                 </div>
+                {% for button in 1 .. max_buttons %}
+                    <div class="button-placeholder"></div>
+                {% endfor %}
+            </div>
 
-                <div id="{{ info.section_id }}-section"
-                     class="course-section
-                     {% if info.is_panel_expanded is defined and info.is_panel_expanded %} panel-active {% endif %}"
-                >
-                    {% for g_info in info.gradeables %}
-                        <div id="{{ g_info.id }}" class="gradeable-row">
-                            <div class="course-main">
-                                {% if g_info.edit_buttons or g_info.delete_buttons %}
-                                    {% for button in g_info.edit_buttons %}
-                                        {{ self.renderButton(button, date_time_format) }}
-                                    {% endfor %}
-                                    {% for button in g_info.delete_buttons %}
-                                        {{ self.renderButton(button, date_time_format) }}
-                                    {% endfor %}
-                                {% endif %}
-                                <div class="course-title">
-                                    {{ g_info.name }}
-                                    {% if g_info.url|trim != "" %}
-                                        <a class="external"
-                                           href="{{ g_info.url }}"
-                                           target="_blank"
-                                           aria-label="Go to instructions for {{ g_info.name }}"
-                                        >
-                                            <i class="fas fa-external-link-alt"></i>
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% for button in g_info.buttons %}
-                                <div class="course-button">{{ self.renderButton(button, date_time_format) }}</div>
+            <div id="{{ info.section_id }}-section"
+                 class="course-section
+                 {% if info.is_panel_expanded is defined and info.is_panel_expanded %} panel-active {% endif %}"
+            >
+                {% for g_info in info.gradeables %}
+                <div id="{{ g_info.id }}" class="gradeable-row">
+                    <div class="course-main">
+                        {% if g_info.edit_buttons or g_info.delete_buttons %}
+                            {% for button in g_info.edit_buttons %}
+                                {{ self.renderButton(button, date_time_format) }}
                             {% endfor %}
+                            {% for button in g_info.delete_buttons %}
+                                {{ self.renderButton(button, date_time_format) }}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="course-title">
+                            {{ g_info.name }}
+                            {% if g_info.url|trim != "" %}
+                                <a class="external"
+                                   href="{{ g_info.url }}"
+                                   target="_blank"
+                                   aria-label="Go to instructions for {{ g_info.name }}"
+                                >
+                                    <i class="fas fa-external-link-alt" style="color: #ccc;"></i>
+                                </a>
+                            {% endif %}
                         </div>
+                    </div>
+                    {% for button in g_info.buttons %}
+                        <div class="course-button">{{ self.renderButton(button, date_time_format) }}</div>
                     {% endfor %}
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+        {% endfor %}
         </div>
     {% else %}
         <div class="container no-assignments-message">
-            <p>There are currently no assignments posted.  Please check back later.</p>
+            <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #999;">There are currently no assignments posted.  Please check back later.</p>
         </div>
     {% endif %}
 </div>
+
+
+
+
+
+
+
 
 
 {% macro renderButton(button, date_format) %}
