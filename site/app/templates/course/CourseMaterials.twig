@@ -13,7 +13,7 @@
             color: #fff;
         }
         .content {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
             background-color: #222;
@@ -174,6 +174,8 @@
     </div>
 </div>
 
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var samplePaperInput = document.getElementById('sample-paper-upload');
@@ -197,10 +199,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 variantContainer.classList.add('variant-container');
                 downloadSection.appendChild(variantContainer);
 
+                // Create Set label for each variant
+                var setLabel = document.createElement('p');
+                setLabel.innerText = 'Set ' + (i + 1);
+                variantContainer.appendChild(setLabel);
+
                 // Create textarea for each variant
                 var textarea = document.createElement('textarea');
                 textarea.classList.add('review-edit-textarea');
-                textarea.value = content;
+                textarea.value = 'Set ' + (i + 1) + '\n' + content; // Include Set label in textarea
                 variantContainer.appendChild(textarea);
 
                 // Create download button for each variant
@@ -211,11 +218,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 variantContainer.appendChild(downloadBtn);
 
                 // Add event listener to download button
-                downloadBtn.addEventListener('click', function () {
-                    var variantContent = this.previousSibling.value;
-                    var blob = new Blob([variantContent], { type: 'text/plain' });
-                    this.href = URL.createObjectURL(blob);
-                });
+                (function(i) {
+                    downloadBtn.addEventListener('click', function () {
+                        var variantContent = 'Set ' + (i + 1) + '\n' + content; // Include Set label in downloaded file
+                        var blob = new Blob([variantContent], { type: 'text/plain' });
+                        this.href = URL.createObjectURL(blob);
+                    });
+                })(i); // Pass i to immediately invoked function to capture its value
             }
         };
         
@@ -223,6 +232,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
+
+
+
+
 
 </body>
 </html>
