@@ -50,6 +50,10 @@
             font-size: 16px;
             outline: none;
         }
+        .generate-btn {
+            background-color: #00cc00;
+            color: #fff;
+        }
         .upload-btn {
             background-color: #00aaff;
         }
@@ -153,6 +157,12 @@
             <input type="file" id="solution-upload" style="display: none;">
             <label for="course-materials-upload" class="btn upload-btn">Upload Course Materials</label>
             <input type="file" id="course-materials-upload" style="display: none;">
+            <br>
+            <br>
+            <!-- File name display -->
+            <span id="uploaded-file-name" style="display: none;"></span>
+            <!-- Generate Button -->
+            <button id="generate-btn" class="btn generate-btn" style="display: none;">Generate</button>
         </div>
     </div>
 
@@ -174,18 +184,37 @@
     </div>
 </div>
 
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var samplePaperInput = document.getElementById('sample-paper-upload');
+    var generateBtn = document.getElementById('generate-btn');
     var numberOfVariantsInput = document.getElementById('number-of-variants');
+    var uploadedFileName = document.getElementById('uploaded-file-name');
     var downloadSection = document.querySelector('.section.download');
     
     samplePaperInput.addEventListener('change', function () {
         var file = samplePaperInput.files[0];
         var reader = new FileReader();
         
+        reader.onload = function (e) {
+            var content = e.target.result;
+            var variants = parseInt(numberOfVariantsInput.value);
+
+            // Display uploaded file name
+            uploadedFileName.innerText = 'Uploaded File: ' + file.name;
+            uploadedFileName.style.display = 'block';
+
+            // Show generate button
+            generateBtn.style.display = 'inline-block';
+        };
+        
+        reader.readAsText(file);
+    });
+    
+    generateBtn.addEventListener('click', function () {
+        var file = samplePaperInput.files[0];
+        var reader = new FileReader();
+
         reader.onload = function (e) {
             var content = e.target.result;
             var variants = parseInt(numberOfVariantsInput.value);
@@ -227,11 +256,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 })(i); // Pass i to immediately invoked function to capture its value
             }
         };
-        
+
         reader.readAsText(file);
     });
 });
 </script>
+
 
 
 
