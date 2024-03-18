@@ -153,15 +153,19 @@
             <!-- Upload Buttons -->
             <label for="sample-paper-upload" class="btn upload-btn">Upload Base Question Set</label>
             <input type="file" id="sample-paper-upload" style="display: none;">
+            <span id="uploaded-file-name" style="display: none;"></span>
+            <br>
             <label for="solution-upload" class="btn upload-btn">Upload Solution for the set</label>
             <input type="file" id="solution-upload" style="display: none;">
+            <span id="uploaded-solution-name" style="display: none;"></span> 
+            <br>
             <label for="course-materials-upload" class="btn upload-btn">Upload Course Materials</label>
+            <span id="uploaded-materials-name" style="display: none;"></span>
             <input type="file" id="course-materials-upload" style="display: none;">
             <br>
-            <br>
             <!-- File name display -->
-            <span id="uploaded-file-name" style="display: none;"></span>
             <!-- Generate Button -->
+            <span id="uploaded-file-name" style="display: none;">Generating based on this file</span>
             <button id="generate-btn" class="btn generate-btn" style="display: none;">Generate</button>
         </div>
     </div>
@@ -191,7 +195,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var numberOfVariantsInput = document.getElementById('number-of-variants');
     var uploadedFileName = document.getElementById('uploaded-file-name');
     var downloadSection = document.querySelector('.section.download');
-    
+    var solutionUpload = document.getElementById('solution-upload');
+    var courseMaterialsUpload = document.getElementById('course-materials-upload');
+    var uploadedSolutionName = document.getElementById('uploaded-solution-name');
+    var uploadedMaterialsName = document.getElementById('uploaded-materials-name');
+
+    solutionUpload.addEventListener('change', function () {
+        var solutionFile = solutionUpload.files[0];
+        uploadedSolutionName.innerText = 'Uploaded Solution: ' + solutionFile.name;
+        uploadedSolutionName.style.display = 'block';
+    });
+
+
+    // Add change event listener for course materials upload
+    courseMaterialsUpload.addEventListener('change', function () {
+        var materialsFile = courseMaterialsUpload.files[0];
+        uploadedMaterialsName.innerText = 'Uploaded Course Materials: ' + materialsFile.name;
+        uploadedMaterialsName.style.display = 'block';
+    });
+
     samplePaperInput.addEventListener('change', function () {
         var file = samplePaperInput.files[0];
         var reader = new FileReader();
